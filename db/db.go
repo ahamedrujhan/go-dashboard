@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/jackc/pgx/v5/pgconn"
 	_ "github.com/lib/pq"
+	"go_test/config"
 	"os"
 	"time"
 )
@@ -16,9 +17,14 @@ var DB *sql.DB
 func InitDB() {
 	var err error
 
+	// load config
+	conf := config.LoadConfig()
+
 	// Initiate the db connection
 
-	DB, err = sql.Open("postgres", "host=localhost user=root password=toor sslmode=disable dbname=go_test")
+	dbstr := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable", conf.Host, conf.Username, conf.Password, conf.Db_name)
+
+	DB, err = sql.Open("postgres", dbstr)
 
 	if err != nil {
 		panic(err)

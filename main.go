@@ -2,11 +2,15 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"go_test/config"
 	"go_test/db"
 	"go_test/routes"
 )
 
 func main() {
+
+	// load config
+	conf := config.LoadConfig()
 
 	db.InitDB() // db initialization
 
@@ -15,6 +19,6 @@ func main() {
 	// routes register
 	routes.RegisterRoutes(server)
 
-	server.Run(":8080") // run go gin server
+	server.Run(conf.Port) // run go gin server
 
 }
