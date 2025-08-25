@@ -4,11 +4,10 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"github.com/gocarina/gocsv"
 	"github.com/jackc/pgx/v5/pgconn"
 	_ "github.com/lib/pq"
-	"go_test/model"
 	"os"
+	"time"
 )
 
 // DB Database global variable
@@ -25,14 +24,12 @@ func InitDB() {
 		panic(err)
 	}
 
-	// initiating the create table function
-	createTables()
-	initData()
-
 	DB.SetMaxOpenConns(10)
 	DB.SetMaxIdleConns(5)
 
-	defer DB.Close()
+	// initiating the create table function
+	createTables()
+	initData()
 
 }
 
@@ -69,88 +66,18 @@ func getTableRowCount() int64 {
 		panic("Could not get table count")
 	}
 
-	fmt.Println("Transaction Count is:", count)
+	fmt.Println("Transaction row Count is:", count)
 
 	return count
 
 }
 
-func importData() {
-
-	// open csv
-
-	file, err := os.OpenFile("./GO_test_5m.csv", os.O_RDWR|os.O_CREATE, os.ModePerm)
-
-	if err != nil {
-		panic("Could not open data file")
-	}
-
-	defer file.Close()
-
-	//stream rows
-	transactionChain := make(chan model.Transaction)
-	go func() {
-		defer close(transactionChain)
-		err := gocsv.UnmarshalFile(file, &transactionChain)
-		if err != nil {
-			panic(err)
-		}
-	}()
-
-	// Insert into batches
-	batchSize := 1000
-	var batch []model.Transaction
-
-	for t := range transactionChain {
-		batch = append(batch, t)
-		if len(batch) >= batchSize {
-			// save batch
-			saveBatch(batch)
-
-			batch = batch[:0] // reset
-		}
-	}
-
-	// save remaining
-	if len(batch) > 0 {
-		// save batch
-		saveBatch(batch)
-	}
-
-	fmt.Println("Data imported successfully...")
-}
-
-func saveBatch(batch []model.Transaction) {
-	tx, err := DB.Begin()
-
-	if err != nil {
-		panic(err)
-	}
-
-	stmt, err := tx.Prepare(`
-INSERT INTO transactions 
-(transaction_id, transaction_date, user_id, country, region, product_id, product_name, category, price, quantity, total_price, stock_quantity, added_date)
-		VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)
-`)
-	if err != nil {
-		panic(err)
-	}
-	for _, t := range batch {
-		_, err := stmt.Exec(t.TransactionID, t.TransactionDate, t.UserID, t.Country, t.Region,
-			t.ProductID, t.ProductName, t.Category, t.Price, t.Quantity,
-			t.TotalPrice, t.StockQuantity, t.AddedDate)
-		if err != nil {
-			panic(err)
-		}
-	}
-
-	err = tx.Commit()
-	if err != nil {
-		panic(err)
-	}
-}
-
 func copyData() {
+
+	// record the starting time
+	start := time.Now()
+
+	fmt.Println("data import started...")
 
 	ctx := context.Background()
 	conn, _ := pgconn.Connect(ctx, "postgres://root:toor@localhost:5432/go_test")
@@ -171,6 +98,9 @@ func copyData() {
 		return
 	}
 	fmt.Println("CSV loaded successfully!")
+
+	elapsed := time.Since(start)
+	fmt.Println("Data import took %s", elapsed)
 }
 
 func initData() {
