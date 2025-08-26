@@ -5,9 +5,9 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs, { Dayjs } from 'dayjs';
 
 export default function MonthlySales(data) {
-    const months = data?.data.months || []
-    const soldQuantity = data?.data.soldQuantity || []
-    const totalRevenue = data?.data.totalRevenue || []
+    const months = data?.data?.months || []
+    const soldQuantity = data?.data?.soldQuantity || []
+    const totalRevenue = data?.data?.totalRevenue || []
     const margin = { right: 24 };
 
     // Convert month strings to Date objects for DatePicker
@@ -20,9 +20,6 @@ export default function MonthlySales(data) {
     });
     const [fromDate, setFromDate] = useState<Dayjs | null>(dayjs(monthDates[0]));
     const [toDate, setToDate] = useState<Dayjs | null>(dayjs(monthDates[monthDates.length - 1])); // latest
-
-
-
 
 
 

@@ -1,5 +1,5 @@
 # Stage 1: Build the React application
-FROM node:18 AS build
+FROM node:22 AS build
 
 # Set the working directory
 WORKDIR /app
@@ -20,7 +20,7 @@ RUN npm run build
 FROM nginx:latest
 
 # Copy the built React application from the previous stage
-COPY --from=build /app/build /usr/share/nginx/html
+COPY --from=build /app/dist /usr/share/nginx/html
 
 # Copy a custom Nginx configuration file (optional)
 COPY nginx.conf /etc/nginx/conf.d/default.conf
