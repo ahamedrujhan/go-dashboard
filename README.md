@@ -166,6 +166,10 @@ curl -X GET http://localhost:8080/api/v1/monthly-revenue
 > **📝 Note**: All endpoints return JSON data optimized for dashboard visualization and are designed to handle large datasets efficiently through database indexing and materialized views.
 
 
+## Dashboard Image 
+![Dashboard](./Dashboard.png)
+
+
 ---
 
 **Enjoy! 🚀**
