@@ -25,14 +25,20 @@ func InitDB(conf config.Config) {
 
 	pgConnStr := fmt.Sprintf("postgres://%s:%s@%s:5432/%s", conf.Username, conf.Password, conf.Host, conf.Db_name)
 	ctx := context.Background()
-	conn, _ := pgconn.Connect(ctx, pgConnStr)
-	defer conn.Close(ctx)
+	conn, err := pgconn.Connect(ctx, pgConnStr)
+
+	if err != nil {
+    panic(fmt.Sprintf("Failed to connect with pgconn: %v", err))
+}
+	
 
 	DB, err = sql.Open("postgres", dbstr)
 
 	if err != nil {
 		panic(err)
 	}
+
+	defer conn.Close(ctx)
 
 	DB.SetMaxOpenConns(10)
 	DB.SetMaxIdleConns(5)
