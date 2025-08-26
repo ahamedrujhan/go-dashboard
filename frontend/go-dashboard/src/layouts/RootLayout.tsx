@@ -6,8 +6,7 @@ export default function RootLayout() {
 
 return (
     <Box sx={{
-        display:"flex",
-        minHeight: "100vh",
+         minHeight: "100vh",
         p:1
     }}>
         {/*any modifications to root layout you can add*/}
