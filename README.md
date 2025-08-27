@@ -2,6 +2,9 @@
 
 A modern web dashboard built with Go, featuring real-time data visualization and monitoring capabilities.
 
+## Live Hosted
+- **Live Hosted URL (AWS)**: [http://13.200.196.211/](http://13.200.196.211/)
+
 ## Features
 
 - **🚀 Optimized Data Fetching**: Advanced indexing and materialized views for lightning-fast data retrieval
