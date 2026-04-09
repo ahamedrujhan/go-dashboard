@@ -1,0 +1,11 @@
+{
+  "apps": [
+    {
+      "name": "Gas Tech",
+      "packageName": "com.gastech.mobile",
+      "apkUrl": "https://expo.dev/accounts/everestx/projects/GasTechMobile/builds/b8b11032-9b95-4ea7-875b-40a258a19561",
+      "versionCode": 2,
+      "versionName": "1.0.5"
+    }
+  ]
+}
