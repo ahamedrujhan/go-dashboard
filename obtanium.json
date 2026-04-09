@@ -1,8 +1,8 @@
 {
   "apps": [
     {
-      "id": "https://expo.dev/accounts/everestx/projects/GasTechMobile/builds/b8b11032-9b95-4ea7-875b-40a258a19561",
-      "url": "https://expo.dev/accounts/everestx/projects/GasTechMobile/builds/b8b11032-9b95-4ea7-875b-40a258a19561",
+      "id": "com.gastech",
+      "url": "https://expo.dev/artifacts/eas/oNM7jfYTFfnMuYMAKaQCkk.apk",
       "preferredApkIndex": 0,
       "additionalSettings": "{\"appName\":\"Gas Tech\",\"trackOnly\":false,\"versionDetection\":true}",
       "pinned": false,
